@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5b27k6jdawxh"]
+
+[ext_resource type="Texture2D" uid="uid://b74wp65mqyc1o" path="res://icon.svg" id="1_rl6g5"]
+[ext_resource type="Script" path="res://scripts/Player.cs" id="2_yxp5g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_valux"]
+albedo_texture = ExtResource("1_rl6g5")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tdkek"]
+height = 1.5
+
+[node name="test_movement" type="Node3D"]
+metadata/_edit_lock_ = true
+
+[node name="TestWorld" type="Node3D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(1, 0.000135281, -0.00040651, -0.000135112, 1, 0.000384968, 0.000406566, -0.000384909, 1, 0, 0, 0)
+use_collision = true
+size = Vector3(7.58399, 1, 7.85671)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(1, 0.000135281, -0.00040651, -0.000135112, 1, 0.000384968, 0.000406566, -0.000384909, 1, 1.76368, 0.471523, -1.91279)
+use_collision = true
+size = Vector3(1.66494, 1, 1.44886)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(0.937736, -0.347349, -0.000514947, 0.347349, 0.937736, 0.000219728, 0.000406566, -0.000384909, 1, 4.64852, 0.689087, -0.116337)
+use_collision = true
+size = Vector3(7.58399, 1, 7.85671)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43214, 0.861718)
+script = ExtResource("2_yxp5g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_tdkek")
+metadata/_edit_lock_ = true
+
+[node name="TempModel" type="CSGCylinder3D" parent="Player"]
+height = 1.5
+metadata/_edit_lock_ = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, -1.88857e-08, -4.29038e-09, 1.88857e-08, 0.901848, 0.432054, -4.29038e-09, -0.432054, 0.901848, 1.04948, 4.02964, 8.55293)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.956666, -0.240926, -0.163537, 0, -0.561621, 0.827394, -0.291186, -0.79154, -0.537284, 0.768097, 6.79162, -0.598443)

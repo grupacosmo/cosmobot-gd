@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhqc8dfgpgen3"]
+
+[ext_resource type="Shader" path="res://shaders/water_v1.gdshader" id="1_8iph4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_txban"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_usxq4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qd442"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bot7x"]
+noise = SubResource("FastNoiseLite_qd442")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pt7uc"]
+render_priority = 0
+shader = ExtResource("1_8iph4")
+shader_parameter/noise = SubResource("NoiseTexture2D_bot7x")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sy8yt"]
+material = SubResource("ShaderMaterial_pt7uc")
+subdivide_width = 64
+subdivide_depth = 64
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("BoxMesh_txban")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_usxq4")
+
+[node name="Water V1_1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.976499, 0, 0, 0, 0.976499, 0, 0, 0, 0.976499, 0, 0, 0)
+mesh = SubResource("PlaneMesh_sy8yt")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0.437524, 1)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.999969, 0.00628712, -0.00468761, 0.00783518, -0.826395, 0.563037, -0.000333939, -0.563056, -0.826419, 0, 1.56281, 1.989)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5b27k6jdawxh"]
+[gd_scene load_steps=6 format=3 uid="uid://b5b27k6jdawxh"]
 
 [ext_resource type="Texture2D" uid="uid://b74wp65mqyc1o" path="res://icon.svg" id="1_rl6g5"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="2_yxp5g"]
+[ext_resource type="Script" path="res://scripts/ShoulderCamera.cs" id="3_7ycms"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_valux"]
 albedo_texture = ExtResource("1_rl6g5")
@@ -28,7 +29,7 @@ size = Vector3(1.66494, 1, 1.44886)
 material = SubResource("StandardMaterial3D_valux")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="TestWorld"]
-transform = Transform3D(0.937736, -0.347349, -0.000514947, 0.347349, 0.937736, 0.000219728, 0.000406566, -0.000384909, 1, 4.64852, 0.689087, -0.116337)
+transform = Transform3D(0.000406519, -0.00038491, 1, 0.347349, 0.937736, 0.000219728, -0.937736, 0.347349, 0.000514903, 0, 0.689, -3.16179)
 use_collision = true
 size = Vector3(7.58399, 1, 7.85671)
 material = SubResource("StandardMaterial3D_valux")
@@ -45,8 +46,13 @@ metadata/_edit_lock_ = true
 height = 1.5
 metadata/_edit_lock_ = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, -1.88857e-08, -4.29038e-09, 1.88857e-08, 0.901848, 0.432054, -4.29038e-09, -0.432054, 0.901848, 1.04948, 4.02964, 8.55293)
+[node name="ShoulderCamera" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.944735, 1.09801, 1.83768)
+current = true
+fov = 70.0
+script = ExtResource("3_7ycms")
+Offset = Vector3(1, 1, 4)
+CameraSensitivity = 0.005
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.956666, -0.240926, -0.163537, 0, -0.561621, 0.827394, -0.291186, -0.79154, -0.537284, 0.768097, 6.79162, -0.598443)

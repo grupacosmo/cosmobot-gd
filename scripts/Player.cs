@@ -8,8 +8,15 @@ public partial class Player : CharacterBody3D
     [Export] public float Acceleration = 60.0f;
 	[Export] public float JumpForce = 4.5f;
 
+    [Export] public float JetpackForce = 3.0f;
+    [Export] public float JetpackMaxFuel = 1.5f;
+    [Export] public float JetpackFuelRegenSpeed = 4.0f;
+
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
     public bool sprinting = false;
+    public bool jetpackOn = false;
+
+    public float jetpackFuel = 0f;
 
     private ShoulderCamera shoulderCamera;
     private float currentSpeed;
@@ -63,8 +70,33 @@ public partial class Player : CharacterBody3D
 
 		if (Input.IsActionJustPressed("jump"))
 		{
-			newVelocity.Y = JumpForce;
+            // Jump
+            if (IsOnFloor())
+            {
+                newVelocity.Y = JumpForce;
+            }
+            else
+            {
+                jetpackOn = true;
+            }
+			
 		}
+        // Process jetpack
+        if (jetpackOn)
+        {
+            newVelocity.Y = Mathf.Max(newVelocity.Y, JetpackForce);
+            jetpackFuel -= (float)delta;
+            if (Input.IsActionJustReleased("jump") || jetpackFuel <= 0f)
+            {
+                jetpackOn = false;
+            }
+        }
+        // Jetpack fuel regen
+        if (IsOnFloor() && jetpackOn == false)
+        {
+            jetpackFuel += JetpackFuelRegenSpeed * (float)delta;
+            jetpackFuel = Mathf.Clamp(jetpackFuel, 0, JetpackMaxFuel);
+        }
 
         Velocity = newVelocity;
         MoveAndSlide();

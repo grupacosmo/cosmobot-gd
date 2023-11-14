@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Cosmobot;
 
 public partial class ShoulderCamera : Camera3D
 {

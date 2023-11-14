@@ -13,25 +13,26 @@ namespace Cosmobot
         [Export] public float Acceleration = 60.0f;
         [Export] public float AirAcceleration = 15.0f;
         [Export] public float JumpForce = 4.5f;
+        [Export] public float GravityMultiplier = 1.0f;
 
         [ExportCategory("Jetpack")]
         [Export] public float JetpackForce = 3.0f;
         [Export] public float JetpackMaxFuel = 1.5f;
         [Export] public float JetpackFuelRegenSpeed = 4.0f;
 
-        public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-        public bool sprinting = false;
-        public bool jetpackOn = false;
-
-        public float jetpackFuel = 0f;
-
+        private float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
         private ShoulderCamera shoulderCamera;
+
+        private bool sprinting = false;
+        private bool jetpackOn = false;
+        private float jetpackFuel = 0f;
         private float currentSpeed;
         private float currentAcceleration;
         
         public override void _Ready()
         {
             shoulderCamera = (ShoulderCamera)GetNode("ShoulderCamera");
+            gravity *= GravityMultiplier;
         }
 
         public override void _Process(double delta)

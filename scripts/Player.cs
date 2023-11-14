@@ -4,11 +4,15 @@ using System;
 public partial class Player : CharacterBody3D
 {
 	[Export] public float WalkSpeed = 5.0f;
+    [Export] public float SprintSpeed = 8.0f;
+    [Export] public float Acceleration = 60.0f;
 	[Export] public float JumpForce = 4.5f;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+    public bool sprinting = false;
 
     private ShoulderCamera shoulderCamera;
+    private float currentSpeed;
 
     public override void _Ready()
     {
@@ -34,23 +38,27 @@ public partial class Player : CharacterBody3D
 	{
         Vector3 newVelocity = Velocity;
 
-        // Ruch w poziomie
+        // Horizontal movement
         Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        Vector2 localInputDir = inputDir.Rotated(-shoulderCamera.Rotation.Y);
+        Vector3 directionH = (Transform.Basis * new Vector3(localInputDir.X, 0, localInputDir.Y)).Normalized();
 
-        if (direction != Vector3.Zero)
+        if (Input.IsActionPressed("sprint"))
         {
-            newVelocity.X = direction.X * WalkSpeed;
-            newVelocity.Z = direction.Z * WalkSpeed;
+            sprinting = true;
+            currentSpeed = SprintSpeed;
         }
         else
         {
-            newVelocity.X = Mathf.MoveToward(Velocity.X, 0, WalkSpeed);
-            newVelocity.Z = Mathf.MoveToward(Velocity.Z, 0, WalkSpeed);
+            sprinting = false;
+            currentSpeed = WalkSpeed;
         }
-        newVelocity = newVelocity.Rotated(Vector3.Up, shoulderCamera.Rotation.Y);
 
-		// Ruch w pionie
+        Vector3 targetVelocityH = directionH * currentSpeed;
+        newVelocity.X = (float)Mathf.MoveToward(Velocity.X, targetVelocityH.X, Acceleration * delta);
+        newVelocity.Z = (float)Mathf.MoveToward(Velocity.Z, targetVelocityH.Z, Acceleration * delta);
+
+		// Vertical movement
 		newVelocity.Y -= gravity * (float)delta;
 
 		if (Input.IsActionJustPressed("jump"))

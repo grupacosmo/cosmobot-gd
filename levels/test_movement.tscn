@@ -19,7 +19,25 @@ metadata/_edit_lock_ = true
 [node name="CSGBox3D" type="CSGBox3D" parent="TestWorld"]
 transform = Transform3D(1, 0.000135281, -0.00040651, -0.000135112, 1, 0.000384968, 0.000406566, -0.000384909, 1, 0, 0, 0)
 use_collision = true
-size = Vector3(7.58399, 1, 7.85671)
+size = Vector3(23.8383, 1, 26.13)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(0.386402, 0.000339389, -0.000162214, -5.22076e-05, 2.50877, 0.000153618, 0.000157098, -0.000965648, 0.399041, 8.09779, 0.408262, 0)
+use_collision = true
+size = Vector3(23.8383, 1, 26.13)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(0.246203, 0.000339479, -2.96015e-05, -3.3265e-05, 2.50944, 2.80329e-05, 0.000100098, -0.000965905, 0.0728187, -6.44251, 0.408262, -4.07246)
+use_collision = true
+size = Vector3(23.8383, 1, 26.13)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(0.0139194, 0.000339025, -0.000116846, -1.88067e-06, 2.50608, 0.000110654, 5.65913e-06, -0.000964612, 0.287437, -6.44251, 0.408262, 0.205333)
+use_collision = true
+size = Vector3(23.8383, 1, 26.13)
 material = SubResource("StandardMaterial3D_valux")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="TestWorld"]
@@ -30,6 +48,18 @@ material = SubResource("StandardMaterial3D_valux")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="TestWorld"]
 transform = Transform3D(0.000406519, -0.00038491, 1, 0.347349, 0.937736, 0.000219728, -0.937736, 0.347349, 0.000514903, 0, 0.689, -3.16179)
+use_collision = true
+size = Vector3(7.58399, 1, 7.85671)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(0.000406519, -0.00038491, 1, 0.728936, 0.684582, -3.28333e-05, -0.684582, 0.728936, 0.000558863, 0, 2.689, -7.29462)
+use_collision = true
+size = Vector3(7.58399, 1, 7.85671)
+material = SubResource("StandardMaterial3D_valux")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="TestWorld"]
+transform = Transform3D(0.937444, -0.347451, -0.000120568, 0.347241, 0.938012, 5.14464e-05, 0.000406429, -0.00038505, 0.234137, 0.160767, -0.0948024, 4.39274)
 use_collision = true
 size = Vector3(7.58399, 1, 7.85671)
 material = SubResource("StandardMaterial3D_valux")

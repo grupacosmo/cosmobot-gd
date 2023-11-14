@@ -66,6 +66,7 @@ material = SubResource("StandardMaterial3D_valux")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43214, 0.861718)
+collision_layer = 2
 script = ExtResource("2_yxp5g")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
@@ -83,6 +84,9 @@ fov = 70.0
 script = ExtResource("3_7ycms")
 Offset = Vector3(1, 1, 4)
 CameraSensitivity = 0.005
+
+[node name="ClipPreventionRay" type="RayCast3D" parent="Player/ShoulderCamera"]
+enabled = false
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.956666, -0.240926, -0.163537, 0, -0.561621, 0.827394, -0.291186, -0.79154, -0.537284, 0.768097, 6.79162, -0.598443)

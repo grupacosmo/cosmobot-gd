@@ -3,6 +3,12 @@ shader_type spatial;
 render_mode specular_toon;
 
 uniform sampler2D noise;
+uniform float rim = 0.2f;
+uniform float metalic = 0.0f;
+uniform float roughness = 0.01f;
+uniform vec3 albedo: source_color = vec3(0.1, 0.3, 0.5);
+uniform float amplitude = 0.3f; // it is not a real amplitude, though I cannot redefin 'height' so will  stay with this for now and replace in feature with better name
+
 
 float wave(vec2 position){
   position += texture(noise, position / 10.0).x * 2.0 - 1.0;
@@ -11,10 +17,10 @@ float wave(vec2 position){
 }
 
 float height(vec2 position, float time) {
-  float d = wave((position + time) * 0.4) * 0.3;
-  d += wave((position - time) * 0.3) * 0.3;
-  d += wave((position + time) * 0.5) * 0.2;
-  d += wave((position - time) * 0.6) * 0.2;
+  float d = wave((position + time) * 0.4) * amplitude;
+  d += wave((position - time) * 0.3) * amplitude;
+  d += wave((position + time) * 0.5) * amplitude;
+  d += wave((position - time) * 0.6) * amplitude;
   return d;
 }
 
@@ -27,8 +33,8 @@ void vertex() {
 
 void fragment() {
   float fresnel = sqrt(1.0 - dot(NORMAL, VIEW));
-  RIM = 0.2;
-  METALLIC = 0.0;
-  ROUGHNESS = 0.01 * (1.0 - fresnel);  
-  ALBEDO = vec3(0.1, 0.3, 0.5) * (0.2 * fresnel);
+  RIM = rim;
+  METALLIC = metalic;
+  ROUGHNESS = roughness * (1.0 - fresnel);  
+  ALBEDO = albedo * (0.2 * fresnel);
 }

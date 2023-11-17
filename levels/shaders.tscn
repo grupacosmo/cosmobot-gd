@@ -14,6 +14,11 @@ noise = SubResource("FastNoiseLite_qd442")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pt7uc"]
 render_priority = 0
 shader = ExtResource("1_8iph4")
+shader_parameter/rim = 0.2
+shader_parameter/metalic = 0.0
+shader_parameter/roughness = 0.01
+shader_parameter/albedo = Color(0.1, 0.3, 0.5, 1)
+shader_parameter/amplitude = 0.3
 shader_parameter/noise = SubResource("NoiseTexture2D_bot7x")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_sy8yt"]

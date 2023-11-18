@@ -26,7 +26,7 @@ namespace Cosmobot
         private ShoulderCamera _shoulderCamera;
 
         private bool _jetpackActive = false;
-        private bool _sprinting = false;
+        private bool _isSprinting = false;
 
         private bool CanRefuelJetpack => IsOnFloor() && _jetpackActive == false;
         private bool JetpackDisableCondition => !Input.IsActionPressed("jump_jetpack") || JetpackFuel <= 0f;
@@ -63,20 +63,20 @@ namespace Cosmobot
 
         private void ProcessHorizontalMovement(float delta) // Walking and sprinting
         {
-            Vector2 newVelocityH = new Vector2(Velocity.X, Velocity.Z);
+            Vector2 newVelocityH = new(Velocity.X, Velocity.Z);
             
             Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
             Vector2 localInputDir = inputDir.Rotated(-_shoulderCamera.Rotation.Y);
-            _sprinting = Input.IsActionPressed("sprint");
+            _isSprinting = Input.IsActionPressed("sprint");
 
-            float CurrentSpeed = _sprinting ? SprintSpeed : WalkSpeed;
-            float CurrentAcceleration = IsOnFloor() ? Acceleration : AirAcceleration;
+            float _currentSpeed = _isSprinting ? SprintSpeed : WalkSpeed;
+            float _currentAcceleration = IsOnFloor() ? Acceleration : AirAcceleration;
 
-            Vector2 targetVelocityH = localInputDir * CurrentSpeed;
-            newVelocityH.X = Mathf.MoveToward(newVelocityH.X, targetVelocityH.X, CurrentAcceleration * delta);
-            newVelocityH.Y = Mathf.MoveToward(newVelocityH.Y, targetVelocityH.Y, CurrentAcceleration * delta);
+            Vector2 targetVelocityH = localInputDir * _currentSpeed;
+            newVelocityH.X = Mathf.MoveToward(newVelocityH.X, targetVelocityH.X, _currentAcceleration * delta);
+            newVelocityH.Y = Mathf.MoveToward(newVelocityH.Y, targetVelocityH.Y, _currentAcceleration * delta);
 
-            Velocity = new Vector3(newVelocityH.X, Velocity.Y, newVelocityH.Y);
+            Velocity = new(newVelocityH.X, Velocity.Y, newVelocityH.Y);
         }
 
         private void ProcessVerticalMovement(float delta) // Jumping and jetpack
@@ -115,7 +115,7 @@ namespace Cosmobot
                 JetpackFuel = Mathf.Clamp(JetpackFuel, 0, JetpackMaxFuel);
             }
 
-            Velocity = new Vector3(Velocity.X, newVelocityY, Velocity.Z);
+            Velocity = new(Velocity.X, newVelocityY, Velocity.Z);
         }
 
         #endregion

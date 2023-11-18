@@ -83,7 +83,6 @@ current = true
 fov = 70.0
 script = ExtResource("3_7ycms")
 Offset = Vector3(1, 1, 4)
-CameraSensitivity = 0.005
 
 [node name="ClipPreventionRay" type="RayCast3D" parent="Player/ShoulderCamera"]
 enabled = false

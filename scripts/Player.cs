@@ -8,31 +8,33 @@ namespace Cosmobot
     public partial class Player : CharacterBody3D
     {
         [ExportCategory("Movement")]
-        [Export] public float WalkSpeed = 5.0f;
-        [Export] public float SprintSpeed = 8.0f;
-        [Export] public float Acceleration = 60.0f;
-        [Export] public float AirAcceleration = 15.0f;
-        [Export] public float JumpForce = 4.5f;
-        [Export] public float GravityMultiplier = 1.0f;
+        [Export] public float WalkSpeed { get; private set; } = 5.0f;
+        [Export] public float SprintSpeed { get; private set; } = 8.0f;
+        [Export] public float Acceleration { get; private set; } = 60.0f;
+        [Export] public float AirAcceleration { get; private set; } = 15.0f;
+        [Export] public float JumpForce { get; private set; } = 4.5f;
+        [Export] public float GravityMultiplier { get; private set; } = 1.0f;
 
         [ExportCategory("Jetpack")]
-        [Export] public float JetpackForce = 3.0f;
-        [Export] public float JetpackMaxFuel = 1.5f;
-        [Export] public float JetpackFuelRegenSpeed = 4.0f;
+        [Export] public float JetpackForce { get; private set; } = 3.0f;
+        [Export] public float JetpackMaxFuel { get; private set; } = 1.5f;
+        [Export] public float JetpackFuelRegenSpeed { get; private set; } = 4.0f;
 
-        private float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-        private ShoulderCamera shoulderCamera;
+        public float JetpackFuel { get; private set; } = 0f;
 
-        private bool sprinting = false;
-        private bool jetpackOn = false;
-        private float jetpackFuel = 0f;
-        private float currentSpeed;
-        private float currentAcceleration;
-        
+        private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+        private ShoulderCamera _shoulderCamera;
+
+        private bool _jetpackActive = false;
+        private bool _sprinting = false;
+
+        private bool CanRefuelJetpack => IsOnFloor() && _jetpackActive == false;
+        private bool JetpackDisableCondition => !Input.IsActionPressed("jump_jetpack") || JetpackFuel <= 0f;
+
         public override void _Ready()
         {
-            shoulderCamera = (ShoulderCamera)GetNode("ShoulderCamera");
-            gravity *= GravityMultiplier;
+            _shoulderCamera = (ShoulderCamera)GetNode("ShoulderCamera");
+            _gravity *= GravityMultiplier;
         }
 
         public override void _Process(double delta)
@@ -47,71 +49,77 @@ namespace Cosmobot
 
         public override void _PhysicsProcess(double delta)
         {
-            ProcessMovement(delta);
+            ProcessMovement((float)delta);
         }
 
         #region ProcessMovement
-        private void ProcessMovement(double delta)
+        private void ProcessMovement(float delta)
         {
-            Vector3 newVelocity = Velocity;
+            ProcessHorizontalMovement((float)delta);
+            ProcessVerticalMovement((float)delta);
 
-            // ### Horizontal movement
+            MoveAndSlide();
+        }
 
-            // Get input
+        private void ProcessHorizontalMovement(float delta) // Walking and sprinting
+        {
+            Vector2 newVelocityH = new Vector2(Velocity.X, Velocity.Z);
+            
             Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-            Vector2 localInputDir = inputDir.Rotated(-shoulderCamera.Rotation.Y);
-            Vector3 directionH = (Transform.Basis * new Vector3(localInputDir.X, 0, localInputDir.Y)).Normalized();
+            Vector2 localInputDir = inputDir.Rotated(-_shoulderCamera.Rotation.Y);
+            _sprinting = Input.IsActionPressed("sprint");
 
-            // Calculate max speed
-            sprinting = Input.IsActionPressed("sprint");
-            currentSpeed = sprinting ? SprintSpeed : WalkSpeed;
-            currentAcceleration = IsOnFloor() ? Acceleration : AirAcceleration;
+            float CurrentSpeed = _sprinting ? SprintSpeed : WalkSpeed;
+            float CurrentAcceleration = IsOnFloor() ? Acceleration : AirAcceleration;
 
-            // Calculate velocity
-            Vector3 targetVelocityH = directionH * currentSpeed;
-            newVelocity.X = (float)Mathf.MoveToward(Velocity.X, targetVelocityH.X, currentAcceleration * delta);
-            newVelocity.Z = (float)Mathf.MoveToward(Velocity.Z, targetVelocityH.Z, currentAcceleration * delta);
+            Vector2 targetVelocityH = localInputDir * CurrentSpeed;
+            newVelocityH.X = Mathf.MoveToward(newVelocityH.X, targetVelocityH.X, CurrentAcceleration * delta);
+            newVelocityH.Y = Mathf.MoveToward(newVelocityH.Y, targetVelocityH.Y, CurrentAcceleration * delta);
 
-            // ### Vertical movement
-            newVelocity.Y -= gravity * (float)delta;
+            Velocity = new Vector3(newVelocityH.X, Velocity.Y, newVelocityH.Y);
+        }
 
-            // Check for jump/jetpack input
-            if (Input.IsActionJustPressed("jump"))
+        private void ProcessVerticalMovement(float delta) // Jumping and jetpack
+        {
+            float newVelocityY = Velocity.Y;
+
+            newVelocityY -= _gravity * delta;
+
+            if (Input.IsActionJustPressed("jump_jetpack"))
             {
                 if (IsOnFloor()) // Jump
                 {
-                    newVelocity.Y = JumpForce;
+                    newVelocityY = JumpForce;
                 }
                 else // Enable jetpack
                 {
-                    jetpackOn = true;
+                    _jetpackActive = true;
                 }
 
             }
-            // Process jetpack
-            if (jetpackOn)
+            
+            if (_jetpackActive)
             {
-                newVelocity.Y = Mathf.Max(newVelocity.Y, JetpackForce);
-                jetpackFuel -= (float)delta;
+                newVelocityY = Mathf.Max(newVelocityY, JetpackForce);
+                JetpackFuel -= delta;
 
-                // Turn off jetpack if conditions met
-                if (!Input.IsActionPressed("jump") || jetpackFuel <= 0f)
+                if (JetpackDisableCondition)
                 {
-                    jetpackOn = false;
+                    _jetpackActive = false;
                 }
             }
-            // Jetpack fuel regen when on floor
-            if (IsOnFloor() && jetpackOn == false)
+            
+            if (CanRefuelJetpack)
             {
-                jetpackFuel += JetpackFuelRegenSpeed * (float)delta;
-                jetpackFuel = Mathf.Clamp(jetpackFuel, 0, JetpackMaxFuel);
+                JetpackFuel += JetpackFuelRegenSpeed * delta;
+                JetpackFuel = Mathf.Clamp(JetpackFuel, 0, JetpackMaxFuel);
             }
 
-            // ### Finalize
-            Velocity = newVelocity;
-            MoveAndSlide();
+            Velocity = new Vector3(Velocity.X, newVelocityY, Velocity.Z);
         }
+
+        #endregion
     }
-    #endregion
+
 
 }

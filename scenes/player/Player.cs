@@ -64,7 +64,7 @@ namespace Cosmobot
         private void ProcessHorizontalMovement(float delta) // Walking and sprinting
         {
             Vector2 newVelocityH = new(Velocity.X, Velocity.Z);
-            
+
             Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
             Vector2 localInputDir = inputDir.Rotated(-_shoulderCamera.Rotation.Y);
             _isSprinting = Input.IsActionPressed("sprint");
@@ -97,7 +97,7 @@ namespace Cosmobot
                 }
 
             }
-            
+
             if (_jetpackActive)
             {
                 newVelocityY = Mathf.Max(newVelocityY, JetpackForce);
@@ -108,7 +108,7 @@ namespace Cosmobot
                     _jetpackActive = false;
                 }
             }
-            
+
             if (CanRefuelJetpack)
             {
                 JetpackFuel += JetpackFuelRegenSpeed * delta;

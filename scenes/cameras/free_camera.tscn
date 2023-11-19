@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdap40k24jdfd"]
+
+[ext_resource type="Script" path="res://scenes/cameras/FreeCamera.cs" id="1_skj3s"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_h3l17"]
+
+[node name="FreeCamera" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.09008, 7.01436)
+script = ExtResource("1_skj3s")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+current = true
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_h3l17")
+metadata/_edit_lock_ = true

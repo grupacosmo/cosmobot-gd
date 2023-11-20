@@ -57,7 +57,8 @@ public partial class FreeCamera : CharacterBody3D
         }
 
         inputVector = inputVector.Normalized();
-		MoveAndCollide(inputVector * moveSpeed * (float)delta);
+        Velocity = inputVector * moveSpeed;
+        MoveAndSlide();
 	}
 
     public override void _Input(InputEvent @event)

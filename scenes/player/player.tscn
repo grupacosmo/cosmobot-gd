@@ -20,4 +20,3 @@ height = 1.5
 metadata/_edit_lock_ = true
 
 [node name="ShoulderCamera" parent="." instance=ExtResource("2_8p7l0")]
-current = false

@@ -22,13 +22,15 @@ namespace Cosmobot
 
         public float JetpackFuel { get; private set; } = 0f;
 
+        public bool isActive = true; // TEMP
+
         private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
         private ShoulderCamera _shoulderCamera;
 
         private bool _jetpackActive = false;
         private bool _isSprinting = false;
 
-        private bool CanRefuelJetpack => IsOnFloor() && _jetpackActive == false;
+        private bool CanRefuelJetpack => IsOnFloor() && _jetpackActive == false && isActive;
         private bool JetpackDisableCondition => !Input.IsActionPressed("jump_jetpack") || JetpackFuel <= 0f;
 
         public override void _Ready()
@@ -44,6 +46,13 @@ namespace Cosmobot
             if (Input.IsActionJustPressed("quit_temp"))
             {
                 GetTree().Quit();
+            }
+
+            // TEMP
+            if (Input.IsActionJustPressed("switch_camera_mode"))
+            {
+                isActive = !isActive;
+                _shoulderCamera.Current = isActive;
             }
         }
 
@@ -66,6 +75,7 @@ namespace Cosmobot
             Vector2 newVelocityH = new(Velocity.X, Velocity.Z);
 
             Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+            inputDir = isActive ? inputDir : Vector2.Zero; // TEMP
             Vector2 localInputDir = inputDir.Rotated(-_shoulderCamera.Rotation.Y);
             _isSprinting = Input.IsActionPressed("sprint");
 
@@ -85,7 +95,7 @@ namespace Cosmobot
 
             newVelocityY -= _gravity * delta;
 
-            if (Input.IsActionJustPressed("jump_jetpack"))
+            if (Input.IsActionJustPressed("jump_jetpack") && isActive)
             {
                 if (IsOnFloor()) // Jump
                 {

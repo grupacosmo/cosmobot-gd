@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8kqxa7xhmrl8"]
+
+[ext_resource type="Script" path="res://scenes/cameras/ShoulderCamera.cs" id="1_b6agi"]
+
+[node name="ShoulderCamera" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.944735, 1.09801, 1.83768)
+current = true
+fov = 70.0
+script = ExtResource("1_b6agi")
+Offset = Vector3(1, 1, 4)
+
+[node name="ClipPreventionRay" type="RayCast3D" parent="."]
+enabled = false

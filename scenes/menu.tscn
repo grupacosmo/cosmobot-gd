@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://dju2ruuac2k1w"]
+
+[ext_resource type="Script" path="res://scripts/Menu.cs" id="1_kgh76"]
+[ext_resource type="Texture2D" uid="uid://hdbalffcj3f5" path="res://images/Bez tytułu.png" id="2_ygmu1"]
+[ext_resource type="Theme" uid="uid://smimedlwf4mi" path="res://themes/button_theme.tres" id="3_6k1eb"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_kgh76")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("2_ygmu1")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -193.0
+offset_top = -68.0
+offset_right = 193.0
+offset_bottom = 68.0
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("3_6k1eb")
+
+[node name="New Game" type="Button" parent="MarginContainer/ButtonsContainer"]
+layout_mode = 2
+text = "New Game"
+
+[node name="Load Game" type="Button" parent="MarginContainer/ButtonsContainer"]
+layout_mode = 2
+text = "Load Game"
+
+[node name="Options" type="Button" parent="MarginContainer/ButtonsContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="Quit" type="Button" parent="MarginContainer/ButtonsContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="MarginContainer/ButtonsContainer/New Game" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MarginContainer/ButtonsContainer/Load Game" to="." method="_on_load_game_pressed"]
+[connection signal="pressed" from="MarginContainer/ButtonsContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="MarginContainer/ButtonsContainer/Quit" to="." method="_on_quit_pressed"]

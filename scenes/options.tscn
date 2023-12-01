@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtn17wlakhw5o"]
+
+[ext_resource type="Script" path="res://scripts/Options.cs" id="1_en22a"]
+[ext_resource type="Texture2D" uid="uid://hdbalffcj3f5" path="res://images/Bez tytułu.png" id="2_vnjkl"]
+[ext_resource type="Theme" uid="uid://smimedlwf4mi" path="res://themes/button_theme.tres" id="3_sgcuh"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_en22a")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("2_vnjkl")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -193.0
+offset_top = -27.0
+offset_right = 193.0
+offset_bottom = 27.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("3_sgcuh")
+
+[node name="Volume" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Volume"
+
+[node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Volume" to="." method="_on_volume_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

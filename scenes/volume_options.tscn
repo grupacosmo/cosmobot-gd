@@ -1,0 +1,87 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsshgj3ugrpl7"]
+
+[ext_resource type="Texture2D" uid="uid://hdbalffcj3f5" path="res://images/Bez tytułu.png" id="1_ch57r"]
+[ext_resource type="Script" path="res://scripts/VolumeOptions.cs" id="1_dt5lw"]
+[ext_resource type="Theme" uid="uid://smimedlwf4mi" path="res://themes/button_theme.tres" id="2_jjmtv"]
+[ext_resource type="Script" path="res://scripts/VolumeSlider.cs" id="3_7wqom"]
+
+[node name="volume_options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dt5lw")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_ch57r")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -193.0
+offset_top = -87.0
+offset_right = 193.0
+offset_bottom = 87.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_jjmtv")
+
+[node name="MasterVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Master Volume"
+horizontal_alignment = 1
+
+[node name="MasterVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("3_7wqom")
+
+[node name="MusicVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Music Volume"
+horizontal_alignment = 1
+
+[node name="MusicVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("3_7wqom")
+
+[node name="SfxVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Sfx Volume"
+horizontal_alignment = 1
+
+[node name="SfxVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("3_7wqom")
+
+[node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[node name="MasterVolume" type="AudioStreamPlayer" parent="."]
+
+[node name="MusicVolume" type="AudioStreamPlayer" parent="."]
+
+[node name="SfxVolume" type="AudioStreamPlayer" parent="."]
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
